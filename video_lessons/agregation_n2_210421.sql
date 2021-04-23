@@ -22,5 +22,5 @@ VALUES
   ('Иван', '1998-01-12', '15.12.2016 12:45', '15.12.2016 12:45'),
   ('Мария', '2006-08-29', '12.01.2017 8:56', '12.01.2017 8:56');
   
-  
-SELECT DAYNAME(CONCAT('2021', SUBSTRING(birthday_at, 5, 11))) week_day, COUNT(*) FROM users GROUP BY week_day;
+ 
+SELECT DAYNAME(CONCAT(SUBSTRING(now(), 1, 4), SUBSTRING(birthday_at, 5, 11))) week_day, COUNT(*) FROM users GROUP BY week_day;
