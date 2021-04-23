@@ -23,5 +23,4 @@ VALUES
   (1, 719, 500),
   (1, 638, 1);
 
-SELECT * FROM storehouses_products ORDER BY if(value = 0, 10000, value);
-
+SELECT * FROM storehouses_products ORDER BY if(value > 0, 0, 1), value;
