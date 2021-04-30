@@ -1,8 +1,21 @@
--- 4. Подсчитать общее количество лайков десяти самым молодым пользователям (сколько лайков получили 10 самых молодых пользователей).
+-- 4. РџРѕРґСЃС‡РёС‚Р°С‚СЊ РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ Р»Р°Р№РєРѕРІ РґРµСЃСЏС‚Рё СЃР°РјС‹Рј РјРѕР»РѕРґС‹Рј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРј (СЃРєРѕР»СЊРєРѕ Р»Р°Р№РєРѕРІ РїРѕР»СѓС‡РёР»Рё 10 СЃР°РјС‹С… РјРѕР»РѕРґС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№).
+
+
+-- Р РµС€РµРЅРёРµ СЃ РїРѕРјРѕС‰СЊСЋ РІР»РѕР¶РµРЅРЅРѕРіРѕ Р·Р°РїСЂРѕСЃР°
 
 SELECT COUNT(*) total_likes
 FROM likes 
 WHERE target_id IN (SELECT * FROM (SELECT user_id FROM profiles ORDER BY birthday DESC LIMIT 10) AS user_id) 
 AND target_type = 'users';
 
+-- Р РµС€РµРЅРёРµ СЃ РїРѕРјРѕС‰СЊСЋ JOINa
 
+SELECT SUM(users_likes) FROM (
+SELECT p.user_id, COUNT(l.target_id) users_likes
+FROM profiles p 
+LEFT JOIN likes l
+ON p.user_id = l.target_id
+AND target_type = 'users'
+GROUP BY p.user_id
+ORDER BY p.birthday DESC 
+LIMIT 10) likes_table;
