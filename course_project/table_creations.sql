@@ -14,7 +14,7 @@ CREATE TABLE albums (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) COMMENT 'Название альбома',
   artists_id INT UNSIGNED COMMENT 'Название артиста',
-  release_date DATETIME COMMENT 'Дата выхода',
+  release_date DATE COMMENT 'Дата выхода',
   genre VARCHAR(255) COMMENT 'Жанр',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
