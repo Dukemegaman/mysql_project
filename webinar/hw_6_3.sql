@@ -1,9 +1,25 @@
--- 3. Определить кто больше поставил лайков (всего) - мужчины или женщины?
+-- 3. РћРїСЂРµРґРµР»РёС‚СЊ РєС‚Рѕ Р±РѕР»СЊС€Рµ РїРѕСЃС‚Р°РІРёР» Р»Р°Р№РєРѕРІ (РІСЃРµРіРѕ) - РјСѓР¶С‡РёРЅС‹ РёР»Рё Р¶РµРЅС‰РёРЅС‹?
 
+
+-- Р РµС€РµРЅРёРµ СЃ РїРѕРјРѕС‰СЊСЋ РІР»РѕР¶РµРЅРЅРѕРіРѕ Р·Р°РїСЂРѕСЃР°
 SELECT 
 (SELECT gender FROM profiles WHERE profiles.user_id = likes.user_id) genders, 
 COUNT(*) 
 FROM likes
-GROUP BY genders
-;
+GROUP BY genders;
+
+-- Р РµС€РµРЅРёСЏ СЃ РїРѕРјРѕС‰СЊСЋ JOINa
+
+SELECT p.gender, COUNT(*) total_likes
+FROM profiles p
+JOIN likes l 
+ON p.user_id = l.user_id
+GROUP BY gender
+ORDER BY total_likes DESC
+LIMIT 1;
+
+
+
+
+
 
