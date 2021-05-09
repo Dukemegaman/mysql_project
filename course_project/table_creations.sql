@@ -1,109 +1,109 @@
 DROP TABLE IF EXISTS artists; 
 CREATE TABLE artists (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Название артиста',
-  country VARCHAR(2) COMMENT 'Страна',
-  genre VARCHAR(255) COMMENT 'Жанр',
+  name VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ Р°СЂС‚РёСЃС‚Р°',
+  country VARCHAR(2) COMMENT 'РЎС‚СЂР°РЅР°',
+  genre VARCHAR(255) COMMENT 'Р–Р°РЅСЂ',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) COMMENT = 'Артисты';
+) COMMENT = 'РђСЂС‚РёСЃС‚';
 
 
 DROP TABLE IF EXISTS albums;
 CREATE TABLE albums (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Название альбома',
-  artists_id INT UNSIGNED COMMENT 'Название артиста',
-  release_date DATE COMMENT 'Дата выхода',
-  genre VARCHAR(255) COMMENT 'Жанр',
+  name VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ Р°Р»СЊР±РѕРјР°',
+  artists_id INT UNSIGNED COMMENT 'ID Р°СЂС‚РёСЃС‚Р°',
+  release_date DATETIME COMMENT 'Р”Р°С‚Р° РІС‹С…РѕРґР°',
+  genre VARCHAR(255) COMMENT 'Р–Р°РЅСЂ',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) COMMENT = 'Альбомы';
+) COMMENT = 'РђР»СЊР±РѕРјС‹';
 
 
 DROP TABLE IF EXISTS tracks;
 CREATE TABLE tracks (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Название трека',
-  album_id INT UNSIGNED COMMENT 'Название альбома',
-  genre VARCHAR(255) COMMENT 'Жанр',
+  name VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ С‚СЂРµРєР°',
+  album_id INT UNSIGNED COMMENT 'ID Р°Р»СЊР±РѕРјР°',
+  genre VARCHAR(255) COMMENT 'Р–Р°РЅСЂ',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) COMMENT = 'Треки';
+) COMMENT = 'РўСЂРµРєРё';
 
 
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Имя пользователя',
-  residence_country VARCHAR(2) COMMENT 'Страна пользователя',
-  birthday_at DATE COMMENT 'Дата рождения',
-  gender ENUM('m', 'f') COMMENT 'Пол',
+  name VARCHAR(255) COMMENT 'РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+  residence_country VARCHAR(2) COMMENT 'РЎС‚СЂР°РЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+  birthday_at DATE COMMENT 'Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ',
+  gender ENUM('m', 'f') COMMENT 'РџРѕР»',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE
-) COMMENT = 'Пользователи';
+) COMMENT = 'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ';
 
 
 DROP TABLE IF EXISTS favourites;
 CREATE TABLE favourites (
-  user_id INT UNSIGNED COMMENT 'ID пользователя',
-  track_id INT UNSIGNED COMMENT 'ID трека',
+  user_id INT UNSIGNED COMMENT 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+  track_id INT UNSIGNED COMMENT 'ID С‚СЂРµРєР°',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE
-) COMMENT = 'Избранные треки';
+) COMMENT = 'Р›СЋР±РёРјС‹Рµ С‚СЂРµРєРё';
 
 DROP TABLE IF EXISTS dislikes;
 CREATE TABLE dislikes (
-  user_id INT UNSIGNED COMMENT 'ID пользователя',
-  track_id INT UNSIGNED COMMENT 'ID трека',
+  user_id INT UNSIGNED COMMENT 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+  track_id INT UNSIGNED COMMENT 'ID С‚СЂРµРєР°',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE
-) COMMENT = 'Треки, которые не появляются в подборках';
+) COMMENT = 'РўСЂРµРєРё, РєРѕС‚РѕСЂС‹Рµ РЅРµ РїРѕСЏРІР»СЏСЋС‚СЃСЏ РІ РїРѕРґР±РѕСЂРєР°С…';
 
 DROP TABLE IF EXISTS compilations;
 CREATE TABLE compilations (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Название подборки',
-  track_id INT UNSIGNED COMMENT 'ID трека',
+  id int UNSIGNED,
+  name VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ РїРѕРґР±РѕРєСЂРё',
+  track_id INT UNSIGNED COMMENT 'ID С‚СЂРµРєР°',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-) COMMENT = 'Подборки';
+) COMMENT = 'РџРѕРґР±РѕСЂРєРё';
 
 
 DROP TABLE IF EXISTS users_playlists;
 CREATE TABLE users_playlists (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Название плейлиста',
-  user_id INT UNSIGNED COMMENT 'ID пользователя',
+  name VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ РїР»РµР№Р»РёСЃС‚Р°',
+  user_id INT UNSIGNED COMMENT 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE
-) COMMENT = 'Плейлисты пользователей';
+) COMMENT = 'РџР»РµР№Р»РёСЃС‚С‹ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ';
 
 DROP TABLE IF EXISTS users_playlists_tracks;
 CREATE TABLE users_playlists_tracks (
-  playlist_id INT UNSIGNED COMMENT 'ID плейлиста',
-  track_id INT UNSIGNED COMMENT 'ID трека',
+  playlist_id INT UNSIGNED COMMENT 'ID РїР»РµР№Р»РёСЃС‚Р°',
+  track_id INT UNSIGNED COMMENT 'ID С‚СЂРµРєР°',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE
-) COMMENT = 'Треки в плейлистах';
+) COMMENT = 'РўСЂРµРєРё РІ РїР»РµР№Р»РёСЃС‚Р°С…';
 
 
 DROP TABLE IF EXISTS users_playlists_subscriptions;
 CREATE TABLE users_playlists_subscriptions (
-  playlist_id INT UNSIGNED COMMENT 'ID плейлиста',
-  user_id INT UNSIGNED COMMENT 'ID пользователя',
+  playlist_id INT UNSIGNED COMMENT 'ID РїР»РµР№Р»РёСЃС‚Р°',
+  user_id INT UNSIGNED COMMENT 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   is_deleted BOOLEAN DEFAULT FALSE
-) COMMENT = 'Подписки на плейлисты';
+) COMMENT = 'РџРѕРґРїРёСЃРєРё РЅР° РїР»РµР№Р»РёСЃС‚С‹';
 
 DROP TABLE IF EXISTS genres;
 CREATE TABLE genres (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255) COMMENT 'Название жанра'
-) COMMENT = 'Жанры';
+  name VARCHAR(255) COMMENT 'РќР°Р·РІР°РЅРёРµ Р¶Р°РЅСЂР°'
+) COMMENT = 'Р–Р°РЅСЂС‹';
