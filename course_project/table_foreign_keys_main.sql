@@ -1,8 +1,6 @@
 ALTER TABLE albums
   ADD CONSTRAINT artists_id_albums_fk
-    FOREIGN KEY (artists_id) REFERENCES artists(id),
-  ADD CONSTRAINT albums_genres_fk
-    FOREIGN KEY (genre) REFERENCES genres(id);
+    FOREIGN KEY (artists_id) REFERENCES artists(id);
     
 ALTER TABLE users_playlists 
   ADD CONSTRAINT users_id_playlist
@@ -12,11 +10,8 @@ ALTER TABLE tracks
   ADD CONSTRAINT tracks_album_id_fk
     FOREIGN KEY (album_id) REFERENCES albums(id),
   ADD CONSTRAINT tracks_genre_fk
-    FOREIGN KEY (genre) REFERENCES genres(id);
+    FOREIGN KEY (genre_id) REFERENCES genres(id);
     
-ALTER TABLE artists   
-  ADD CONSTRAINT artist_genre_fk
-    FOREIGN KEY (genre) REFERENCES genres(id);
     
 ALTER TABLE users_playlists_tracks   
   ADD CONSTRAINT users_playlists_tracks_playlist_id_fk
@@ -47,7 +42,7 @@ ALTER TABLE compilations
     FOREIGN KEY (track_id) REFERENCES tracks(id);
    
    
-   
+-- ALTER TABLE tracks DROP FOREIGN KEY tracks_album_id_fk;
     
    
    
