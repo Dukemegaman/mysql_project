@@ -26,3 +26,32 @@ LEFT JOIN users_playlists_subscriptions ups
 ON ups.playlist_id = up.id 
 GROUP BY up.name, ups.user_id
 ORDER BY up.id ;
+
+
+
+SELECT up.id,
+count(DISTINCT upt.track_id)
+FROM users_playlists up 
+LEFT JOIN users_playlists_tracks upt 
+ON upt.playlist_id = up.id 
+GROUP BY up.id ;
+
+
+SELECT up.id,
+up.name,
+--   COUNT(ups.user_id) OVER() ,
+--     / (SELECT COUNT(*) FROM communities) AS avg_users_in_groups,
+nt.num_tracks,
+count(ups.user_id)
+FROM users_playlists up 
+LEFT JOIN (SELECT up.id,
+count(DISTINCT upt.track_id) num_tracks
+FROM users_playlists up 
+LEFT JOIN users_playlists_tracks upt 
+ON upt.playlist_id = up.id 
+GROUP BY up.id) nt
+ON up.id = nt.id
+LEFT JOIN users_playlists_subscriptions ups 
+ON ups.playlist_id = up.id 
+GROUP BY up.name, nt.num_tracks
+ORDER BY up.id ;
