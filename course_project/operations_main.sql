@@ -1,57 +1,53 @@
--- 3 самых часто встречающийся жанра в плейлистах и в подборках
+-- Собирательная статистика по плейлистам
+ 
+SELECT DISTINCT
+    up.id,
+    up.name,
+    nt.num_tracks,
+    COUNT(ups.user_id) OVER (PARTITION BY up.id, nt.num_tracks) num_subs,
+    FIRST_VALUE(u.name)
+       OVER (PARTITION BY up.id, nt.num_tracks ORDER BY u.birthday_at DESC) AS youngest_ever_sub,  
+    FIRST_VALUE(u.name)
+       OVER (PARTITION BY up.id, nt.num_tracks ORDER BY u.birthday_at ASC) AS oldest_ever_sub,
+    COUNT(CASE WHEN ups.is_deleted = 0 THEN ups.user_id ELSE NULL END) OVER ()
+        / (SELECT COUNT(*) FROM users_playlists) AS avg_subs_on_playlist
+FROM users_playlists up
+         LEFT JOIN (SELECT up.id, 
+         			COUNT(DISTINCT upt.track_id) num_tracks
+                    FROM users_playlists up
+                             LEFT JOIN users_playlists_tracks upt
+                             ON upt.playlist_id = up.id
+                    WHERE upt.is_deleted = 0
+                    GROUP BY up.id) nt
+         ON up.id = nt.id
+         LEFT JOIN users_playlists_subscriptions ups
+         ON ups.playlist_id = up.id
+         LEFT JOIN users u
+         ON u.id = ups.user_id
+ORDER BY up.id;
 
-  
--- 2. Задание на оконные функции
--- Построить запрос, который будет выводить следующие столбцы:
--- имя группы
--- среднее количество пользователей в группах
--- (сумма количестива пользователей во всех группах делённая на количество групп)
--- самый молодой пользователь в группе (желательно вывести имя и фамилию)
--- самый старший пользователь в группе (желательно вывести имя и фамилию)
--- количество пользователей в группе
--- всего пользователей в системе (количество пользователей в таблице users)
--- отношение в процентах для последних двух значений 
--- (общее количество пользователей в группе / всего пользователей в системе) * 100
+-- 3 самых часто встречающихся жанра в плейлистах и в подборках
 
-SELECT up.id,
-up.name,
-  COUNT(ups.user_id) OVER() ,
---     / (SELECT COUNT(*) FROM communities) AS avg_users_in_groups,
-count(DISTINCT upt.track_id),
-count(DISTINCT ups.user_id)
-FROM users_playlists up 
-LEFT JOIN users_playlists_tracks upt 
-ON upt.playlist_id = up.id 
-LEFT JOIN users_playlists_subscriptions ups 
-ON ups.playlist_id = up.id 
-GROUP BY up.name, ups.user_id
-ORDER BY up.id ;
-
-
-
-SELECT up.id,
-count(DISTINCT upt.track_id)
-FROM users_playlists up 
-LEFT JOIN users_playlists_tracks upt 
-ON upt.playlist_id = up.id 
-GROUP BY up.id ;
-
-
-SELECT up.id,
-up.name,
---   COUNT(ups.user_id) OVER() ,
---     / (SELECT COUNT(*) FROM communities) AS avg_users_in_groups,
-nt.num_tracks,
-count(ups.user_id)
-FROM users_playlists up 
-LEFT JOIN (SELECT up.id,
-count(DISTINCT upt.track_id) num_tracks
-FROM users_playlists up 
-LEFT JOIN users_playlists_tracks upt 
-ON upt.playlist_id = up.id 
-GROUP BY up.id) nt
-ON up.id = nt.id
-LEFT JOIN users_playlists_subscriptions ups 
-ON ups.playlist_id = up.id 
-GROUP BY up.name, nt.num_tracks
-ORDER BY up.id ;
+SELECT asd.name, 
+    SUM(asd.mention_times_raw) mention_times
+FROM (SELECT g.name, 
+          COUNT(upt.track_id) mention_times_raw
+      FROM genres g
+               LEFT JOIN tracks t
+               ON g.id = t.genre_id
+               LEFT JOIN users_playlists_tracks upt
+               ON t.id = upt.track_id
+                   AND upt.is_deleted = 0
+      GROUP BY g.name
+      UNION ALL
+      SELECT g.name, 
+          COUNT(c.track_id) mention_times_raw
+      FROM genres g
+               LEFT JOIN tracks t
+               ON g.id = t.genre_id
+               LEFT JOIN compilations c
+               ON t.id = c.track_id
+      GROUP BY g.name) asd
+GROUP BY asd.name
+ORDER BY mention_times DESC
+LIMIT 3;
